@@ -1,0 +1,22 @@
+import Vue from 'vue'
+import VueRouter from 'vue-router'
+import App from './app.vue'
+import Home from './components/Home.vue'
+import TodoManager from './components/TodoManager.vue'
+
+Vue.use(VueRouter)
+
+const router = new VueRouter()
+
+router.map({
+  '/': {
+    name: 'home',
+    component: Home
+  },
+  'todo': {
+    name: 'todo',
+    component: TodoManager
+  }
+})
+
+router.start(App, '#app')
