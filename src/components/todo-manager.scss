@@ -27,10 +27,23 @@ li {
     height: 22px;
     line-height: 22px;
     // margin: 10px 1px;
-    cursor: pointer;
+    // cursor: pointer;
     &.completed {
         text-decoration: line-through;
     }
+}
+
+.edit-input {
+    display: none;
+}
+
+.editing {
+  .todo-text {
+    display: none;
+  }
+  .edit-input {
+    display: inline;
+  }
 }
 
 footer {

@@ -2,17 +2,17 @@
   <div class="container">
     <h1>This is the TodoManager page.</h1>
     <div class="col-md-6">
-      <form class="form" @submit="onSubmit">
-        <input type="text" v-model="newTodoText" placeholder="Input your new todo" class="form-control">
-      </form>
+      <div class="clearfix">
+        <input class="pull-left" type="checkbox" v-model="allDone">
+        <div class="col-md-5">
+          <form class="form" @submit="onSubmit">
+            <input type="text" v-model="newTodoText" placeholder="Input your new todo" class="form-control">
+          </form>
+        </div>
+      </div>
+      
       <ul>
-        <li v-for="todo in filteredTodoList">
-          <p>
-            <button class="pull-right btn btn-danger btn-xs btn-raised" @click="del($index)">&times;</button>
-            <span class="todo-text" :class="{'completed': todo.isCompleted}" @click="toggleCompleted(todo)">
-            <input type="checkbox" v-model="todo.isCompleted"> {{todo.text}}</span>
-          </p>
-        </li>
+        <todo-item  v-for="todo in filteredTodoList" :todo.sync="todo" :del="del"></todo-item>
       </ul>
       <p class="help-block" v-show="!filteredTodoList.length">There is no item to show</p>
       <footer v-show="todoList.length">
@@ -29,17 +29,44 @@
 </template>
 
 <script>
+  import TodoItem from './TodoItem.vue'
+
   const TODO_LIST_KEY = 'TODO_LIST'
 
   export default {
+    components: {
+      TodoItem
+    },
     data () {
       return {
+        isEditing: false,
+        editingTodo: null,
         filterType: 'SHOW_ALL',
         newTodoText: '',
-        todoList: JSON.parse(window.localStorage.getItem(TODO_LIST_KEY))
+        todoList: JSON.parse(window.localStorage.getItem(TODO_LIST_KEY) || '[]')
+      }
+    },
+    watch: {
+      todoList: {
+        deep: true,
+        handler: (todoList) => {
+          // let todoList = this.todoList//不知为何，这句报错。。。
+          window.localStorage.setItem(TODO_LIST_KEY, JSON.stringify(todoList))
+          console.log('saved')
+        }
       }
     },
     computed: {
+      allDone: {
+        get: function () {
+          return this.leftCount === 0
+        },
+        set: function (value) {
+          this.todoList.forEach(function (todo) {
+            todo.isCompleted = value
+          })
+        }
+      },
       leftCount () {
         return this.todoList.filter(todo => !todo.isCompleted).length
       },
@@ -58,7 +85,7 @@
           default:
             ret = this.todoList
         }
-        window.localStorage.setItem(TODO_LIST_KEY, JSON.stringify(ret))
+        // window.localStorage.setItem(TODO_LIST_KEY, JSON.stringify(ret))
         return ret
       }
     },
@@ -71,12 +98,8 @@
         })
         this.newTodoText = ''
       },
-      toggleCompleted (todo) {
-        // debugger
-        todo.isCompleted = !todo.isCompleted
-      },
-      del (index) {
-        this.todoList.splice(index, 1)
+      del (todo) {
+        this.filteredTodoList.$remove(todo)
       },
       clearCompleted () {
         this.todoList = this.todoList.filter(t => !t.isCompleted)
@@ -84,6 +107,31 @@
     }
   }
 </script>
-<style lang="sass?outputStyle=expanded" scoped src="./todo-manager.scss">
+<style lang="sass?outputStyle=expanded" scoped>
+  input {
+  //padding: 7px 12px;
+  // &:f    ocus {
+      //     box-shadow: none;
+      // }
+  }
+
+  ul {
+    padding: 0;
+  }
+
+  
+
+  footer {
+    border-top: 1px solid green;
+    padding-top: 10px
+  }
+
+  // .checkbox-material {
+     //     display: inline-block;
+     //     cursor: pointer;
+     // }
+  .btn-group {
+    margin: 0;
+  }
 
 </style>
