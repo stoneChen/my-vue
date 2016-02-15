@@ -3,10 +3,10 @@
 		<p :class="{ 'editing': isEditing }">
 			<button class="pull-right btn btn-danger btn-xs btn-raised" @click="delTodo()">&times;</button>
 			<span class="todo-text" :class="{'completed': todo.isCompleted}" >
-				<input type="checkbox" v-model="todo.isCompleted" @click= "toggleCompleted(todo)" >
-				<span @dblclick="startEditing(todo, $index)">{{todo.text}}</span>
+				<input type="checkbox" v-model="todo.isCompleted" @click= "toggleCompleted()" >
+				<span @dblclick="startEditing()">{{todo.text}}</span>
 			</span>
-			<input class="edit-input" type="text" v-if="editingTodo" v-model="editingTodo.text" v-todo-focus="todo == editingTodo" @blur="completeEdit(todo, $index)">
+			<input class="edit-input" type="text"  v-model="editingText" v-todo-focus="editingText" @blur="completeEdit()">
 		</p>
 	</li>
 </template>
@@ -25,17 +25,17 @@
       delTodo () {
         this.del(this.todo)
       },
-      toggleCompleted (todo) {
-        todo.isCompleted = !todo.isCompleted
+      toggleCompleted () {
+        this.todo.isCompleted = !this.todo.isCompleted
       },
-      startEditing (todo, index) {
+      startEditing () {
         console.log('startEditing')
         this.isEditing = true
-        this.editingText = todo.text
+        this.editingText = this.todo.text
       },
-      completeEdit (todo, index) {
-        console.log('completeEdit ', index)
-        this.filteredTodoList.$set(index, Object.assign({}, todo, { isEditing: false, text: this.editingTodo.text }))
+      completeEdit () {
+        console.log('completeEdit ')
+        this.todo.text = this.editingText
         this.isEditing = false
         this.editingText = ''
       }
@@ -45,9 +45,8 @@
         if (!value) {
           return
         }
-        var el = this.el
-        Vue.nextTick(function () {
-          el.focus()
+        Vue.nextTick(() => {
+          this.el.focus()
         })
       }
     }

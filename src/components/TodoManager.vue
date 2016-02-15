@@ -12,7 +12,7 @@
       </div>
       
       <ul>
-        <todo-item  v-for="todo in filteredTodoList" :todo.sync="todo" :del="del"></todo-item>
+        <todo-item  v-for="todo in filteredTodoList" :todo="todo" :del="del"></todo-item>
       </ul>
       <p class="help-block" v-show="!filteredTodoList.length">There is no item to show</p>
       <footer v-show="todoList.length">
