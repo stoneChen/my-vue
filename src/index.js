@@ -6,10 +6,14 @@ import TodoManager from './components/TodoManager.vue'
 
 Vue.use(VueRouter)
 
+if (process.env.NODE_ENV !== 'prodction') {
+  Vue.config.debug = true
+}
+
 const router = new VueRouter()
 
 router.map({
-  '/': {
+  '/home': {
     name: 'home',
     component: Home
   },
@@ -18,5 +22,7 @@ router.map({
     component: TodoManager
   }
 })
-
-router.start(App, '#app')
+.redirect({
+  '*': '/home'
+})
+.start(App, '#app')
