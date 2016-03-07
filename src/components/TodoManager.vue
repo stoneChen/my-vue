@@ -28,10 +28,9 @@
   </div>
 </template>
 
-<script>
+<script type="text/ecmascript-6">
+  import store from 'store'
   import TodoItem from './TodoItem.vue'
-
-  const TODO_LIST_KEY = 'TODO_LIST'
 
   export default {
     components: {
@@ -39,32 +38,33 @@
     },
     data () {
       return {
-        isEditing: false,
-        editingTodo: null,
         filterType: 'SHOW_ALL',
-        newTodoText: '',
-        todoList: JSON.parse(window.localStorage.getItem(TODO_LIST_KEY) || '[]')
+        newTodoText: ''
       }
     },
-    watch: {
-      todoList: {
-        deep: true,
-        handler: (todoList) => {
-          // let todoList = this.todoList//不知为何，这句报错。。。
-          window.localStorage.setItem(TODO_LIST_KEY, JSON.stringify(todoList))
-          console.log('saved')
-        }
-      }
-    },
+//    watch: {
+//      todoList: {
+//        deep: true,
+//        handler: (todoList) => {
+//          // let todoList = this.todoList//不知为何，这句报错。。。
+//          window.localStorage.setItem(TODO_LIST_KEY, JSON.stringify(todoList))
+//          console.log('saved')
+//        }
+//      }
+//    },
     computed: {
+      todoList () {
+        return store.state.todos
+      },
       allDone: {
         get: function () {
           return this.leftCount === 0
         },
         set: function (value) {
-          this.todoList.forEach(function (todo) {
-            todo.isCompleted = value
-          })
+          store.actions.toggleAllTodo(value)
+          // this.todoList.forEach(function (todo) {
+          //   todo.isCompleted = value
+          // })
         }
       },
       leftCount () {
@@ -91,23 +91,28 @@
     },
     methods: {
       onSubmit () {
-        this.todoList.unshift({
-          id: Date.now(),
-          text: this.newTodoText,
-          isCompleted: false
+        // this.todoList.unshift({
+        //   id: Date.now(),
+        //   text: this.newTodoText,
+        //   isCompleted: false
+        // })
+        store.actions.addTodo(this.newTodoText).then((data) => {
+          console.log(data)
+          console.log('addTodo succeed')
         })
         this.newTodoText = ''
       },
-      del (todo) {
-        this.filteredTodoList.$remove(todo)
-      },
+      // del (todo) {
+      //   this.filteredTodoList.$remove(todo)
+      // },
       clearCompleted () {
-        this.todoList = this.todoList.filter(t => !t.isCompleted)
+        store.actions.clearCompleted()
+        // this.todoList = this.todoList.filter(t => !t.isCompleted)
       }
     }
   }
 </script>
-<style lang="sass?outputStyle=expanded" scoped>
+<style scoped >
   input {
   //padding: 7px 12px;
   // &:f    ocus {

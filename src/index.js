@@ -1,14 +1,10 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import App from './app.vue'
+import App from './components/app.vue'
 import Home from './components/Home.vue'
 import TodoManager from './components/TodoManager.vue'
 
 Vue.use(VueRouter)
-
-if (process.env.NODE_ENV !== 'prodction') {
-  Vue.config.debug = true
-}
 
 const router = new VueRouter()
 
