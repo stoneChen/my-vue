@@ -4,23 +4,25 @@ import {
   TODO_EDIT,
   TODO_TOGGLE,
   TODO_TOGGLE_ALL,
-  TODO_CLEAR_ALL
+  TODO_CLEAR_COMPLETED
 } from '../mutation-types'
 
 export const TODO_LIST_KEY = 'TODO_LIST'
 
-export const todosInitialState = JSON.parse(window.localStorage.getItem(TODO_LIST_KEY) || '[]')
+const initialState = {
+  all: JSON.parse(window.localStorage.getItem(TODO_LIST_KEY) || '[]')
+}
 
-export const todoMutations = {
+const mutations = {
   [TODO_ADD] (state, text) {
-    state.todos.unshift({
+    state.all.unshift({
       id: Date.now(),
       text: text,
       isCompleted: false
     })
   },
   [TODO_DELETE] (state, todo) {
-    state.todos.$remove(todo)
+    state.all.$remove(todo)
   },
   [TODO_EDIT] (state, todo, text) {
     todo.text = text
@@ -29,11 +31,16 @@ export const todoMutations = {
     todo.isCompleted = !todo.isCompleted
   },
   [TODO_TOGGLE_ALL] (state, isCompleted) {
-    state.todos.forEach(todo => {
+    state.all.forEach(todo => {
       todo.isCompleted = isCompleted
     })
   },
-  [TODO_CLEAR_ALL] (state) {
-    state.todos.fliter(todo => !todo.isCompleted)
+  [TODO_CLEAR_COMPLETED] (state) {
+    state.all = state.all.filter(todo => !todo.isCompleted)
   }
+}
+
+export default {
+  state: initialState,
+  mutations
 }

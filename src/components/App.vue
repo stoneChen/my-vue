@@ -19,9 +19,11 @@
 
 <script>
   import 'bootstrap/dist/css/bootstrap.css'
+  import store from 'store'
   // import 'bootstrap-material-design/dist/css/bootstrap-material-design.css'
-
+  console.log(store)
   export default {
+    store,
     components: {}
   }
 </script>

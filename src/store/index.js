@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import * as actions from './actions'
-import { todosInitialState, todoMutations, TODO_LIST_KEY } from './modules/todo'
+import createLogger from 'vuex/logger'
+import todos, { TODO_LIST_KEY } from './modules/todo'
 
 Vue.use(Vuex)
 
@@ -14,19 +14,18 @@ const persistMiddleware = {
     console.log('persistMiddleware', state)
   },
   onMutation (mutation, state) {
-    window.localStorage.setItem(TODO_LIST_KEY, JSON.stringify(state.todos))
+    window.localStorage.setItem(TODO_LIST_KEY, JSON.stringify(state.todos.all))
   }
 }
 
-const middlewares = [persistMiddleware]
-debug && middlewares.push(Vuex.createLogger())
+const middlewares = [ persistMiddleware ]
+debug && middlewares.push(createLogger)
+console.log(todos)
 
 export default new Vuex.Store({
-  state: {
-    todos: todosInitialState
-  },
-  actions,
-  mutations: [ todoMutations ],
   strict: debug,
+  modules: {
+    todos
+  },
   middlewares: middlewares
 })

@@ -3,21 +3,24 @@
     <h1>This is the TodoManager page.</h1>
     <div class="col-md-6">
       <div class="clearfix">
-        <input class="pull-left" type="checkbox" v-model="allDone">
+
+        <input class="toggle-all" type="checkbox" :checked="allDone" @change="toggleAllTodo(!allDone)">
         <div class="col-md-5">
           <form class="form" @submit="onSubmit">
             <input type="text" v-model="newTodoText" placeholder="Input your new todo" class="form-control">
           </form>
         </div>
       </div>
-      
+
       <ul>
-        <todo-item  v-for="todo in filteredTodoList" :todo="todo" :del="del"></todo-item>
+        <todo-item v-for="todo in filteredTodoList" :todo="todo" :del="del"></todo-item>
       </ul>
       <p class="help-block" v-show="!filteredTodoList.length">There is no item to show</p>
       <footer v-show="todoList.length">
         <div class="pull-left"><span class="badge">{{leftCount}}</span> item{{leftCount > 1 ? 's' : ''}} left</div>
-        <button class="pull-right btn btn-warning btn-xs" style="margin-left: 20px;" @click="clearCompleted">Clear Completed</button>
+        <button class="pull-right btn btn-warning btn-xs" style="margin-left: 20px;" @click="clearCompleted">Clear
+          Completed
+        </button>
         <div class="pull-right">
           <input type="radio" name="filterType" v-model="filterType" value="SHOW_ALL"> All
           <input type="radio" name="filterType" v-model="filterType" value="SHOW_ACTIVE"> Active
@@ -28,44 +31,35 @@
   </div>
 </template>
 
-<script type="text/ecmascript-6">
-  import store from 'store'
+<script type="text/babel">
   import TodoItem from './TodoItem.vue'
+  import {addTodo, toggleAllTodo, clearCompleted} from 'store/actions'
 
   export default {
-    components: {
-      TodoItem
-    },
     data () {
       return {
         filterType: 'SHOW_ALL',
         newTodoText: ''
       }
     },
-//    watch: {
-//      todoList: {
-//        deep: true,
-//        handler: (todoList) => {
-//          // let todoList = this.todoList//不知为何，这句报错。。。
-//          window.localStorage.setItem(TODO_LIST_KEY, JSON.stringify(todoList))
-//          console.log('saved')
-//        }
-//      }
-//    },
-    computed: {
-      todoList () {
-        return store.state.todos
-      },
-      allDone: {
-        get: function () {
-          return this.leftCount === 0
-        },
-        set: function (value) {
-          store.actions.toggleAllTodo(value)
-          // this.todoList.forEach(function (todo) {
-          //   todo.isCompleted = value
-          // })
+    vuex: {
+      getters: {
+        todoList: state => {
+          return state.todos.all
         }
+      },
+      actions: {
+        addTodo,
+        toggleAllTodo,
+        clearCompleted
+      }
+    },
+    components: {
+      TodoItem
+    },
+    computed: {
+      allDone () {
+        return this.leftCount === 0
       },
       leftCount () {
         return this.todoList.filter(todo => !todo.isCompleted).length
@@ -85,56 +79,39 @@
           default:
             ret = this.todoList
         }
-        // window.localStorage.setItem(TODO_LIST_KEY, JSON.stringify(ret))
         return ret
       }
     },
     methods: {
       onSubmit () {
-        // this.todoList.unshift({
-        //   id: Date.now(),
-        //   text: this.newTodoText,
-        //   isCompleted: false
-        // })
-        store.actions.addTodo(this.newTodoText).then((data) => {
+        this.addTodo(this.newTodoText).then((data) => {
           console.log(data)
           console.log('addTodo succeed')
         })
         this.newTodoText = ''
       },
-      // del (todo) {
-      //   this.filteredTodoList.$remove(todo)
-      // },
       clearCompleted () {
-        store.actions.clearCompleted()
-        // this.todoList = this.todoList.filter(t => !t.isCompleted)
+        this.clearCompleted()
       }
     }
   }
 </script>
-<style scoped >
-  input {
-  //padding: 7px 12px;
-  // &:f    ocus {
-      //     box-shadow: none;
-      // }
+<style lang="sass" rel="stylesheet/scss" scoped>
+  .toggle-all {
+    position: absolute;
+    top: 8px;
+    z-index:10;
   }
 
   ul {
     padding: 0;
   }
 
-  
-
   footer {
     border-top: 1px solid green;
     padding-top: 10px
   }
 
-  // .checkbox-material {
-     //     display: inline-block;
-     //     cursor: pointer;
-     // }
   .btn-group {
     margin: 0;
   }
