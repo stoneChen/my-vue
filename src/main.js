@@ -7,6 +7,8 @@ import TodoManager from './components/TodoManager.vue'
 Vue.use(VueRouter)
 
 const router = new VueRouter()
+// let rr = 1
+// rr++
 
 router.map({
   '/home': {

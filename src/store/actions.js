@@ -4,6 +4,7 @@ import {
   TODO_EDIT,
   TODO_TOGGLE,
   TODO_TOGGLE_ALL,
+  TODO_CLEAR_ALL,
   TODO_CLEAR_COMPLETED
 } from './mutation-types'
 
@@ -16,16 +17,26 @@ export const addTodo = ({ dispatch }, text) => {
   })
 }
 
-export const deleteTodo = makeAction(TODO_DELETE)
+export const deleteTodo = ({ dispatch }, todo) => {
+  dispatch(TODO_DELETE, todo)
+}
 
-export const editTodo = makeAction(TODO_EDIT)
+export const editTodo = ({ dispatch }, todo, text) => {
+  dispatch(TODO_EDIT, todo, text)
+}
 
-export const toggleTodo = makeAction(TODO_TOGGLE)
+export const toggleTodo = ({ dispatch }, todo) => {
+  dispatch(TODO_TOGGLE, todo)
+}
 
-export const toggleAllTodo = makeAction(TODO_TOGGLE_ALL)
+export const toggleAllTodo = ({ dispatch }, isCompleted) => {
+  dispatch(TODO_TOGGLE_ALL, isCompleted)
+}
 
-export const clearCompleted = makeAction(TODO_CLEAR_COMPLETED)
+export const clearAllTodo = ({ dispatch }) => {
+  dispatch(TODO_CLEAR_ALL)
+}
 
-function makeAction (type) {
-  return ({ dispatch }, ...args) => dispatch(type, ...args)
+export const clearCompleted = ({ dispatch }) => {
+  dispatch(TODO_CLEAR_COMPLETED)
 }

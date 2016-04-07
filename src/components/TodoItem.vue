@@ -59,15 +59,15 @@
 </script>
 <style lang="sass" rel="stylesheet/scss" scoped>
   li {
-    padding-top: 10px;
-    margin: 10px 0;
+
     background-color: #fff;
     list-style: none;
     & + & {
       border-top: 1px solid #eee;
     }
     p {
-      margin: 0;
+      /*padding-top: 10px;*/
+      margin: 10px 0;
     }
   }
 

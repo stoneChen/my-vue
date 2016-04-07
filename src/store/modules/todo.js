@@ -4,6 +4,7 @@ import {
   TODO_EDIT,
   TODO_TOGGLE,
   TODO_TOGGLE_ALL,
+  TODO_CLEAR_ALL,
   TODO_CLEAR_COMPLETED
 } from '../mutation-types'
 
@@ -34,6 +35,9 @@ const mutations = {
     state.all.forEach(todo => {
       todo.isCompleted = isCompleted
     })
+  },
+  [TODO_CLEAR_ALL] (state) {
+
   },
   [TODO_CLEAR_COMPLETED] (state) {
     state.all = state.all.filter(todo => !todo.isCompleted)

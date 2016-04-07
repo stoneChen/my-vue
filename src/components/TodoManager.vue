@@ -13,9 +13,9 @@
       </div>
 
       <ul>
-        <todo-item v-for="todo in filteredTodoList" :todo="todo" :del="del"></todo-item>
+        <todo-item v-for="todo in filteredTodoList" :todo="todo" :del="del" transition="slide"></todo-item>
       </ul>
-      <p class="help-block" v-show="!filteredTodoList.length">There is no item to show</p>
+      <p class="help-block" v-show="!filteredTodoList.length" transition="expand">There is no item to show</p>
       <footer v-show="todoList.length">
         <div class="pull-left"><span class="badge">{{leftCount}}</span> item{{leftCount > 1 ? 's' : ''}} left</div>
         <button class="pull-right btn btn-warning btn-xs" style="margin-left: 20px;" @click="clearCompleted">Clear
@@ -115,5 +115,74 @@
   .btn-group {
     margin: 0;
   }
+  /* 必需 */
+  .expand-transition {
+    transition: all .3s ease;
+    height: 30px;
+    overflow: hidden;
+  }
 
+  /* .expand-enter 定义进入的开始状态 */
+  /* .expand-leave 定义离开的结束状态 */
+  .expand-enter, .expand-leave {
+    height: 0;
+    opacity: 0;
+  }
+
+  /*.slide-transition {
+    transition: all .3s;
+    !*transform: none;*!
+    height: 33px;
+  }
+
+  .slide-enter, .slide-leave {
+    transform: translateX(-100%);
+    height: 0;
+  }*/
+  .slide-transition {
+    /*transition: all .6s;*/
+    overflow: hidden;
+  }
+
+  .slide-enter {
+    animation: slide-in .6s;
+  }
+
+  .slide-leave {
+    animation: slide-out .6s;
+  }
+
+  @keyframes slide-out {
+    0% {
+      transform: translateX(0);
+      height: 42px;
+    }
+
+    50% {
+      transform: translateX(-150%);
+      height: 42px;
+    }
+
+    100% {
+      transform: translateX(-150%);
+      height: 0;
+    }
+  }
+
+  @keyframes slide-in {
+    0% {
+      transform: translateX(-150%);
+      height: 0;
+    }
+
+    50% {
+      transform: translateX(-150%);
+      height: 42px;
+    }
+
+    100% {
+      transform: translateX(0%);
+      height: 42px;
+    }
+  }
 </style>
