@@ -1,7 +1,7 @@
 <template>
   <div>
-    <div class="modal-wrapper" v-if="isShow" transition="modal">
-      <div class="modal-container">
+    <div class="modal-wrapper" v-if="isShow" transition="modal" @click="close">
+      <div class="modal-container" @click="stopEvent">
         <div class="modal-header">
           <slot name="header">Default Header</slot>
         </div>
@@ -50,10 +50,16 @@
       ok () {
         console.log('ok')
         this.action()
-        this.isShow = false
+        this.close()
       },
       cancel () {
         console.log('cancel')
+        this.close()
+      },
+      stopEvent (e) {
+        e.stopPropagation()
+      },
+      close () {
         this.isShow = false
       }
     }
