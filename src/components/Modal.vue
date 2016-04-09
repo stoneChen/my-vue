@@ -96,10 +96,12 @@
   }
   /*transition*/
   .modal{
-    &-enter, &-leave {
-      opacity: 0;
+    &-enter, &-leave {// 这两有两种方式实现动画
+      /*opacity: 0;*/
+      background-color: rgba(0, 0, 0, 0);
       .modal-container {
-        transform: translateY(-100px);
+        transform: translateY(-50px);
+        opacity: 0;
       }
     }
   }
