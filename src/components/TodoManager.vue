@@ -13,7 +13,7 @@
       </div>
 
       <ul>
-        <todo-item v-for="todo in filteredTodoList" :todo="todo" :del="del" transition="slide"></todo-item>
+        <todo-item v-for="todo in filteredTodoList" :todo="todo" :del="del"></todo-item>
       </ul>
       <p class="help-block" v-show="!filteredTodoList.length" transition="expand">There is no item to show</p>
       <footer v-show="todoList.length">
@@ -142,60 +142,5 @@
     opacity: 0;
   }
 
-  /*.slide-transition {
-    transition: all .3s;
-    !*transform: none;*!
-    height: 33px;
-  }
 
-  .slide-enter, .slide-leave {
-    transform: translateX(-100%);
-    height: 0;
-  }*/
-  .slide-transition {
-    /*transition: all .6s;*/
-    overflow: hidden;
-  }
-
-  .slide-enter {
-    animation: slide-in .6s;
-  }
-
-  .slide-leave {
-    animation: slide-out .6s;
-  }
-
-  @keyframes slide-out {
-    0% {
-      transform: translateX(0);
-      height: 42px;
-    }
-
-    50% {
-      transform: translateX(-150%);
-      height: 42px;
-    }
-
-    100% {
-      transform: translateX(-150%);
-      height: 0;
-    }
-  }
-
-  @keyframes slide-in {
-    0% {
-      transform: translateX(-150%);
-      height: 0;
-    }
-
-    50% {
-      transform: translateX(-150%);
-      height: 42px;
-    }
-
-    100% {
-      transform: translateX(0%);
-      height: 42px;
-    }
-  }
 </style>

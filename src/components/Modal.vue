@@ -62,7 +62,6 @@
     }
     &-container {
       width: 400px;
-      padding: 20px 30px;
       background-color: #fff;
       border-radius: 2px;
       box-shadow: 0 2px 8px rgba(0, 0, 0, .33);
