@@ -18,7 +18,7 @@
       <p class="help-block" v-show="!filteredTodoList.length" transition="expand">There is no item to show</p>
       <footer v-show="todoList.length">
         <div class="pull-left"><span class="badge">{{leftCount}}</span> item{{leftCount > 1 ? 's' : ''}} left</div>
-        <button class="pull-right btn btn-warning btn-xs" style="margin-left: 20px;" @click="clearCompleted">Clear
+        <button class="pull-right btn btn-warning btn-xs" style="margin-left: 20px;" @click="onClearCompleted">Clear
           Completed
         </button>
         <div class="pull-right">
@@ -29,17 +29,25 @@
       </footer>
     </div>
   </div>
+  <Modal :is-show.sync="isShowModal" :action="doClearCompleted">
+    <div class="header" slot="header">{{confirmTitle}}</div>
+    <div class="body" slot="body">{{confirmContent}}</div>
+  </Modal>
 </template>
 
 <script type="text/babel">
   import TodoItem from './TodoItem.vue'
+  import Modal from './Modal.vue'
   import {addTodo, toggleAllTodo, clearCompleted} from 'store/actions'
 
   export default {
     data () {
       return {
         filterType: 'SHOW_ALL',
-        newTodoText: ''
+        newTodoText: '',
+        isShowModal: false,
+        confirmTitle: '提示',
+        confirmContent: '确认清空已完成的任务吗'
       }
     },
     vuex: {
@@ -55,7 +63,8 @@
       }
     },
     components: {
-      TodoItem
+      TodoItem,
+      Modal
     },
     computed: {
       allDone () {
@@ -90,7 +99,10 @@
         })
         this.newTodoText = ''
       },
-      clearCompleted () {
+      onClearCompleted () {
+        this.isShowModal = true
+      },
+      doClearCompleted () {
         this.clearCompleted()
       }
     }
