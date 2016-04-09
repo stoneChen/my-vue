@@ -9,10 +9,7 @@
           <slot name="body">Default Body</slot>
         </div>
         <div class="modal-footer">
-          <slot name="footer">
-            <button class="btn btn-primary pull-right" @click="ok()">确定</button>
-            <button class="btn btn-default pull-right" @click="cancel()">取消</button>
-          </slot>
+          <slot name="footer">Default Footer</slot>
         </div>
       </div>
     </div>
@@ -25,16 +22,6 @@
         type: Boolean,
         required: true,
         twoWay: true
-      },
-      title: {
-        type: String
-      },
-      content: {
-        type: String
-      },
-      action: {
-        type: Function,
-        required: true
       }
     },
     data () {
@@ -43,23 +30,12 @@
       }
     },
     ready () {
-//      debugger
       document.body.appendChild(this.$el)
     },
     beforeDestroy () {//
-//      debugger
       document.body.removeChild(this.$el)
     },
     methods: {
-      ok () {
-        console.log('ok')
-        this.action()
-        this.close()
-      },
-      cancel () {
-        console.log('cancel')
-        this.close()
-      },
       stopEvent (e) {
         e.stopPropagation()
       },
@@ -108,8 +84,5 @@
         opacity: 0;
       }
     }
-  }
-  .btn + .btn {
-    margin-right: 10px;
   }
 </style>

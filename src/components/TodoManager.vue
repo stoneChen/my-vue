@@ -29,15 +29,16 @@
       </footer>
     </div>
   </div>
-  <Modal :is-show.sync="isShowModal" :action="doClearCompleted">
-    <div class="header" slot="header">{{confirmTitle}}</div>
-    <div class="body" slot="body">{{confirmContent}}</div>
-  </Modal>
+  <Confirm :is-show.sync="isShowConfirm"
+           :title="confirmTitle"
+           :content="confirmContent"
+           :action="clearCompleted"></Confirm>
 </template>
 
 <script type="text/babel">
   import TodoItem from './TodoItem.vue'
-  import Modal from './Modal.vue'
+  import Confirm from './Confirm.vue'
+//  import Modal from './Modal.vue'
   import {addTodo, toggleAllTodo, clearCompleted} from 'store/actions'
 
   export default {
@@ -45,8 +46,8 @@
       return {
         filterType: 'SHOW_ALL',
         newTodoText: '',
-        isShowModal: false,
-        confirmTitle: '提示',
+        isShowConfirm: false,
+        confirmTitle: '提示信息',
         confirmContent: '确认清空已完成的任务吗'
       }
     },
@@ -64,7 +65,7 @@
     },
     components: {
       TodoItem,
-      Modal
+      Confirm
     },
     computed: {
       allDone () {
@@ -100,7 +101,7 @@
         this.newTodoText = ''
       },
       onClearCompleted () {
-        this.isShowModal = true
+        this.isShowConfirm = true
       },
       doClearCompleted () {
         this.clearCompleted()
