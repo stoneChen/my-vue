@@ -46,6 +46,10 @@
 //      debugger
       document.body.appendChild(this.$el)
     },
+    beforeDestroy () {//
+//      debugger
+      document.body.removeChild(this.$el)
+    },
     methods: {
       ok () {
         console.log('ok')
