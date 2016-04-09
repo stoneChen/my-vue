@@ -42,9 +42,12 @@
 
       }
     },
+    ready () {
+//      debugger
+      document.body.appendChild(this.$el)
+    },
     methods: {
       ok () {
-        debugger
         console.log('ok')
         this.action()
         this.isShow = false
